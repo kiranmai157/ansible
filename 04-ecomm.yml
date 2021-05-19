@@ -1,0 +1,15 @@
+---
+- name: update web servers
+  hosts: web
+  become: yes
+
+  tasks:
+  - name: ensure site is deployed
+    package:
+      name: git
+      state: present
+  - name: ensure site is deployed
+    git:
+      repo: https://github.com/ravi2krishna/ecomm.git
+      dest: /var/www/html
+...      
