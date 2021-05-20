@@ -1,0 +1,37 @@
+---
+- name: update web servers
+  hosts: web
+  become: yes
+  tasks:
+  - name: ensure selinux is permissive
+    ansible.posix.selinux:
+      policy: targeted
+      state: permissive
+        
+  - name: ensure httpd conf is updated
+    copy:
+      src: date.php
+      dest: /var/www/html/date.php
+    notify:
+    - Restart apache
+
+  - name: ensure php is present
+    package:
+      name: php
+      state: present
+    notify:
+    - Restart apache
+        
+  - name: ensure httpd conf is updated
+    copy:
+      src: httpd.conf
+      dest: /etc/httpd/conf/httpd.conf
+    notify:
+    - Restart apache
+
+  handlers:
+    - name: Restart apache
+      service:
+        name: httpd
+        state: restarted
+...      

@@ -1,0 +1,27 @@
+---
+- name: update web servers
+  hosts: web
+
+  tasks:
+  - name: ensure directory is present
+    file:
+      path: /home/ec2-user/web
+      state: directory
+  - name: ensure file is present
+    copy:
+      content: welcome to ansible
+      dest: /home/ec2-user/web/file.txt
+
+- name: update web servers
+  hosts: app
+
+  tasks:
+  - name: ensure directory is present
+    file:
+      path: /home/ec2-user/app
+      state: directory
+  - name: ensure file is present
+    copy:
+      content: welcome to ansible
+      dest: /home/ec2-user/app/file.txt
+...      

@@ -1,0 +1,21 @@
+---
+- name: update web servers
+  hosts: all
+
+  tasks:
+  - name: ensure directory is present
+    file:
+      path: /home/ec2-user/redhat
+      state: directory
+    when: ansible_os_family == "RedHat"
+  - name: ensure directory is present
+    file:
+      path: /home/ubuntu/debian
+      state: directory
+    when: ansible_os_family == "Debian"
+  - name: ensure directory is present
+    file:
+      path: /tmp/my_common_dir
+      state: directory
+
+...      

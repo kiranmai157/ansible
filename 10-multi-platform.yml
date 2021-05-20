@@ -1,0 +1,42 @@
+---
+- name: update ubuntu servers
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: ensure apache is present
+    package:
+      name: apache2 
+      state: present
+    when: ansible_os_family == "Debian"
+  - name: ensure apache is started 
+    service:
+      name: apache2
+      state: started
+    when: ansible_os_family == "Debian"
+  - name: ensure apache is enable
+    service:
+      name: apache2
+      enabled: yes
+    when: ansible_os_family == "Debian"
+
+  - name: ensure apache is present
+    package:
+      name: httpd
+      state: present
+    when: ansible_os_family == "RedHat"
+
+  - name: ensure apache is started 
+    service:
+      name: httpd
+      state: started
+    when: ansible_os_family == "RedHat"
+
+  - name: ensure apache is enable
+    service:
+      name: httpd
+      enabled: yes
+    when: ansible_os_family == "RedHat"
+
+
+...      

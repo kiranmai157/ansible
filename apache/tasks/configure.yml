@@ -1,0 +1,26 @@
+---
+  - name: ensure selinux is permissive
+    ansible.posix.selinux:
+      policy: targeted
+      state: permissive
+        
+  - name: ensure httpd conf is updated
+    copy:
+      src: date.php
+      dest: /var/www/html/date.php
+
+  - name: ensure php is present
+    package:
+      name: php
+      state: present
+    notify:
+    - Restart apache
+        
+  - name: ensure httpd conf is updated
+    template:
+      src: httpd.j2
+      dest: /etc/httpd/conf/httpd.conf
+    notify:
+    - Restart apache
+
+...      

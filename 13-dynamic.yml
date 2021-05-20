@@ -1,0 +1,12 @@
+---
+- name: update web servers
+  hosts: all
+  become: yes
+  vars:
+     username: kiranmai
+  tasks:
+        
+  - name: ensure httpd conf is updated
+    template:
+      src: dynamic.j2
+      dest: /var/www/html/dynamic.html

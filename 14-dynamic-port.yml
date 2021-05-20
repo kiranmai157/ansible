@@ -1,0 +1,23 @@
+---
+- name: update web servers
+  hosts: ec2user
+  become: yes
+  vars:
+    http_port: 8090
+  tasks:
+  - name: ensure selinux is permissive
+    ansible.posix.selinux:
+      policy: targeted
+      state: permissive
+        
+  - name: ensure httpd conf is updated
+    template:
+      src: httpd.j2
+      dest: /etc/httpd/conf/httpd.conf
+
+  - name: ensure httpd is restarted
+    service:
+      name: httpd
+      state: restarted
+
+...      

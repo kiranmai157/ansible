@@ -1,9 +1,4 @@
 ---
-- name: update web servers
-  hosts: all
-  become: yes
-
-  tasks:
   - name: ensure apache is present
     package:
       name: httpd

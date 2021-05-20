@@ -1,0 +1,51 @@
+---
+- name: update web servers
+  hosts: all
+  become: yes
+  vars:
+    http_port: 8090
+  handlers:
+    - name: Restart apache
+      service:
+        name: httpd
+        state: restarted
+
+  tasks:
+  - name: ensure apache is present
+    package:
+      name: httpd
+      state: present
+  - name: ensure apache is started 
+    service:
+      name: httpd
+      state: started
+  - name: ensure apache is enable
+    service:
+      name: httpd
+      enabled: yes
+
+  - name: ensure selinux is permissive
+    ansible.posix.selinux:
+      policy: targeted
+      state: permissive
+        
+  - name: ensure httpd conf is updated
+    copy:
+      src: date.php
+      dest: /var/www/html/date.php
+
+  - name: ensure php is present
+    package:
+      name: php
+      state: present
+    notify:
+    - Restart apache
+        
+  - name: ensure httpd conf is updated
+    template:
+      src: httpd.j2
+      dest: /etc/httpd/conf/httpd.conf
+    notify:
+    - Restart apache
+
+...      
